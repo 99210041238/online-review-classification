@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voting Website</title>
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f2f2f2;
+          margin: 0;
+          padding: 0;
+      }
+
+      #registration, #step2, #step3 {
+          max-width: 400px;
+          margin: 20px auto;
+          background-color: #fff;
+          padding: 20px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+          text-align: center;
+          color: #333;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+      }
+
+      button {
+          width: 100%;
+          padding: 10px;
+          background-color: #007BFF;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+      }
+
+      button:hover {
+          background-color: #0056b3;
+      }
+
+      form input[type="radio"] {
+          margin: 5px 0;
+      }
+</style>
+</head>
+<body>
+
+<!-- Step 1: Registration/Login Page -->
+<div id="registration">
+    <!-- (Your existing registration form) -->
+    <button onclick="registerOrLogin()">Register/Login</button>
+    <!-- (Your existing login fields) -->
+</div>
+
+<!-- Step 2: Capture Aadhar and Voter ID -->
+<div id="step2" style="display: none;">
+    <h2>Step 2: Capture Aadhar and Voter ID</h2>
+    <input type="text" id="aadhar" placeholder="Enter Aadhar Card Number"><br>
+    <input type="text" id="voterID" placeholder="Enter Voter ID Number"><br>
+    <input type="file" id="imageInput" accept="image/*"><br>
+    <button onclick="captureImage()">Capture Image</button>
+</div>
+
+<!-- Step 3: Party Selection -->
+<div id="step3" style="display: none;">
+    <h2>Step 3: Party Selection</h2>
+    <form id="partyForm">
+        <!-- (Your party selection form) -->
+    </form>
+    <button onclick="submitVote()">Submit Vote</button>
+</div>
+
+<!-- JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/face-api.js/0.22.2/face-api.min.js"></script>
+<script>
+    // Initialize a vote count
+    let voteCount = 0;
+
+    // Function to toggle visibility of registration and step 2
+    function registerOrLogin() {
+        var registrationDiv = document.getElementById("registration");
+        var step2Div = document.getElementById("step2");
+        registrationDiv.style.display = "none";
+        step2Div.style.display = "block";
+    }
+
+    // Function to capture image (a simplified example using file input)
+    function captureImage() {
+        var imageInput = document.getElementById("imageInput");
+        var imageFile = imageInput.files[0];
+
+        if (imageFile) {
+            // Convert the selected image into an HTMLImageElement
+            const img = new Image();
+            img.src = URL.createObjectURL(imageFile);
+            
+            // Proceed to Step 3 (Party Selection)
+            var step2Div = document.getElementById("step2");
+            var step3Div = document.getElementById("step3");
+            step2Div.style.display = "none";
+            step3Div.style.display = "block";
+        }
+    }
+
+    // Function to submit vote
+    function submitVote() {
+        var partyForm = document.getElementById("partyForm");
+        var selectedParty = partyForm.querySelector('input[name="party"]:checked');
+        if (selectedParty) {
+            var confirmation = confirm("Please ensure the chosen party is the desired one. Continue?");
+            if (confirmation) {
+                voteCount++;
+                alert("Vote submitted! Closing the website.");
+                window.close();
+                alert("Total votes cast: " + voteCount);
+            }
+        } else {
+            alert("Please select a party before submitting your vote.");
+        }
+    }
+</script>
+
+</body>
+</html>
